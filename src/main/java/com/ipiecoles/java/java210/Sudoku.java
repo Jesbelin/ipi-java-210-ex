@@ -107,11 +107,26 @@ public class Sudoku {
 	 * @param tableauCoordonnees
 	 */
 	public void remplitSudokuATrous(String[] tableauCoordonnees) {
+		//définir ligne colonne valeur
+		int ligne = 0;
+		int colonne = 0;
+		short valeur = 1;
+		Short.parseShort(valeur);
+
+		//parcourir le tableau tableauCoordonnees
 		
+
+		//pour chacune des valeurs
+			//-> extrait ligne colonne valeur
+
+
+		//on met la valeur au bon endroit dans sudokuAResoudre
+		sudokuAResoudre[ligne][colonne] = valeur;
     }
 	
 	private int stringToInt(String s) {
 		return Integer.parseInt(s);
+
 	}
 	
 	/**
