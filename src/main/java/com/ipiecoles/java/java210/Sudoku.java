@@ -106,28 +106,37 @@ public class Sudoku {
 	 * 
 	 * @param tableauCoordonnees
 	 */
-	public void remplitSudokuATrous(String[] tableauCoordonnees) {
-		//définir ligne colonne valeur
+	public void remplitSudokuATrous(String[] tableauCocolonnes) {
 		int ligne = 0;
-		int colonne = 0;
+		short colonne = 0;
 		short valeur = 1;
-		Short.parseShort(valeur);
+		//Définir, ligne, colonne et valeur
+		int i = 0;
+		while (i < tableauCocolonnes.length && tableauCocolonnes[i] != null) {
 
-		//parcourir le tableau tableauCoordonnees
-		
+			ligne = Short.parseShort(tableauCocolonnes[i].substring(0, 1)); // Passe du String à un short
+			colonne = (short) Integer.parseInt(tableauCocolonnes[i].substring(1, 2));// (short) Integer.parseInt va convertir un short en Int
+			valeur = Short.parseShort(tableauCocolonnes[i].substring(2, 3));
 
-		//pour chacune des valeurs
-			//-> extrait ligne colonne valeur
+			sudokuAResoudre[ligne][colonne] = valeur; //Ici on integre la valeur dans le tableau sudokuAResoudre
 
-
-		//on met la valeur au bon endroit dans sudokuAResoudre
-		sudokuAResoudre[ligne][colonne] = valeur;
-    }
-	
-	private int stringToInt(String s) {
-		return Integer.parseInt(s);
-
+			i++;
+		}
 	}
+	// 2eme solution avec for
+
+        /*for (int n = 0; n < tableauCocolonnes.length; n++;){
+            if (tableauCocolonnes != null) {
+                break;
+            }
+        }
+        ligne = Short.parseShort (tableauCocolonnes [i].substring(0,1); // Passe du String à un short
+        colonne = (short) Integer.parseInt(tableauCocolonnes[i].substring(1,2));// (short) Integer.parseInt va convertir un short en Int
+        valeur = Short.parseShort(tableauCocolonnes[i].substring(2, 3);
+
+        sudokuAResoudre [ligne] [colonne] = valeur //Ici on integre la valeur dans le tableau sudokuAResoudre
+    }
+*/
 	
 	/**
 	 * Cette méthode affiche un sudoku de manière formatée sur la console.
@@ -151,7 +160,29 @@ public class Sudoku {
 	 * non trouvée (dans ce cas, le programme affiche un blanc à la place de 0
 	 */
 	public void ecrireSudoku(short[][] sudoku) {
-		
+		for (int i = 0; i < sudoku.length; i++){ //i représente la ligne du tableau
+			// .............. => i = 0 / 3 / 6 / 9
+			if (i %3 == 0){
+				System.out.println(" -----------------------");
+			}
+			for (int j = 0; j < sudoku[i].length; j++){ //j représente la colonne sur la ligne i
+				// j : 0 / 3 / 6 / 9
+				if(j %3 == 0)
+				{
+					System.out.print("| ");
+				}
+				if(sudoku[i][j] == 0){
+					System.out.print("  ");
+				}
+				else {
+					//affiche chaque élément de mon tableau à double dimension
+					System.out.print(sudoku[i][j] + " "); //on fait 'print' et pas 'println' car on ne veut pas que ça s'affiche à la ligne à chaque fois
+				}
+			}
+			// j : 9
+			System.out.println("|"); //à la fin de chaque boucle, qui symbolise la fin de chaque ligne on revient à la ligne.
+		}
+		System.out.println(" -----------------------");
     }
 	
 	/**
@@ -169,6 +200,37 @@ public class Sudoku {
 	 * @return
 	 */
 	public static boolean estAutorise(int abscisse, int ordonnee, short chiffre, short[][] sudoku) {
+
+		//Si la valeur est déjà dans la ligne, le chiffre n'est pas autorisé
+		for (int j = 0; j < sudoku[abscisse].length; j++) {
+			if (chiffre == sudoku[abscisse][j]) {
+				return false;
+			}
+		}
+
+		//Si la valeur est déjà dans la colonne, le chiffre n'est pas autorisé
+		for (int i = 0; i < sudoku.length; i++) {
+			if (chiffre == sudoku[i][ordonnee]) {
+				return false;
+			}
+		}
+
+		//Si la valeur est déjà dans la boîte le chiffre n'est pas autorisé
+		//Commencer par écrire l'algo comme si on était sur la première boîte en haut à gauche
+
+		int debutI = (abscisse / 3)*3; //0-2 => 0 / 3-5 => 3 / 6-8 => 6
+		int debutJ= (ordonnee / 3)*3;
+
+
+		for (int i = debutI; i < debutI + 3; i++) {
+			for (int j = debutJ; j <= debutJ + 3; j++) {
+				if (sudoku[i][j] == chiffre) {
+					return false;
+				}
+			}
+		}
+
+		//Si tout est ok, on renvoie vrai
 		return true;
     }
 
